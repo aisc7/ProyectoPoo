@@ -19,6 +19,53 @@ No se requieren dependencias externas ni motores de videojuegos.
 - Flecha derecha: mover el buzo a la derecha.
 - Flecha arriba: mover el buzo hacia arriba.
 - Flecha abajo: mover el buzo hacia abajo.
+- Tecla A: mover el buzo a la izquierda.
+- Tecla D: mover el buzo a la derecha.
+- Tecla W: mover el buzo hacia arriba.
+- Tecla S: mover el buzo hacia abajo.
+
+## Control por joystick o gamepad
+
+El juego funciona siempre con teclado. Las flechas y WASD son el control principal y no dependen de ninguna libreria externa.
+
+El joystick o gamepad queda preparado como bonus opcional mediante `ControladorJoystick`. En esta version no se importa JInput directamente para evitar que el proyecto deje de compilar cuando no exista el `.jar` o una configuracion Maven/Gradle.
+
+Si el equipo decide integrar JInput, debe agregar la dependencia o el `.jar` al classpath del proyecto y completar los TODO de `src/main/controlador/ControladorJoystick.java`. La integracion esperada es:
+
+- Buscar controles de tipo `GAMEPAD` o `STICK`.
+- Leer los ejes X/Y mediante polling.
+- Aplicar una zona muerta aproximada de `0.25`.
+- Convertir los ejes en movimiento del buzo.
+
+Si no hay joystick conectado o configurado, el juego no se cierra y usa teclado. En consola se muestra:
+
+```text
+Joystick no configurado. Se usará teclado.
+```
+
+Algunos controles pueden requerir configuracion del sistema operativo, drivers o mapeo externo antes de que Java pueda detectarlos.
+
+## Modo recomendado si el joystick no es detectado por Java
+
+Para sustentacion, una alternativa practica es mapear el joystick a teclas del teclado con una herramienta externa del sistema operativo.
+
+Mapeo recomendado:
+
+- Arriba -> flecha arriba o W.
+- Abajo -> flecha abajo o S.
+- Izquierda -> flecha izquierda o A.
+- Derecha -> flecha derecha o D.
+
+Asi el juego sigue usando `ControladorTeclado`, que ya esta probado y no depende de librerias externas.
+
+## Pruebas recomendadas
+
+1. Ejecutar sin joystick: debe funcionar con teclado.
+2. Ejecutar con joystick conectado: si se integra JInput y Java lo detecta, debe mover el buzo.
+3. Desconectar joystick: el juego no debe cerrarse.
+4. Probar movimiento con flechas.
+5. Probar movimiento con WASD.
+6. Verificar que el `javax.swing.Timer` sigue actualizando tiempo, profundidad, nivel y entidades.
 
 ## Reglas
 

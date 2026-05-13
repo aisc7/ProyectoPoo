@@ -1,15 +1,13 @@
 package controlador;
-
 import modelo.Buzo;
 import modelo.Juego;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
  * Controla las teclas presionadas para mover el buzo.
  */
-public class ControladorTeclado extends KeyAdapter {
+public class ControladorTeclado extends KeyAdapter implements ControladorEntrada {
     private boolean arriba;
     private boolean abajo;
     private boolean izquierda;
@@ -28,6 +26,7 @@ public class ControladorTeclado extends KeyAdapter {
     /**
      * Aplica el movimiento acumulado al buzo.
      */
+    @Override
     public void actualizarMovimiento(Buzo buzo) {
         if (buzo == null) {
             return;
@@ -51,13 +50,13 @@ public class ControladorTeclado extends KeyAdapter {
     }
 
     private void cambiarEstado(int codigoTecla, boolean activo) {
-        if (codigoTecla == KeyEvent.VK_UP) {
+        if (codigoTecla == KeyEvent.VK_UP || codigoTecla == KeyEvent.VK_W) {
             arriba = activo;
-        } else if (codigoTecla == KeyEvent.VK_DOWN) {
+        } else if (codigoTecla == KeyEvent.VK_DOWN || codigoTecla == KeyEvent.VK_S) {
             abajo = activo;
-        } else if (codigoTecla == KeyEvent.VK_LEFT) {
+        } else if (codigoTecla == KeyEvent.VK_LEFT || codigoTecla == KeyEvent.VK_A) {
             izquierda = activo;
-        } else if (codigoTecla == KeyEvent.VK_RIGHT) {
+        } else if (codigoTecla == KeyEvent.VK_RIGHT || codigoTecla == KeyEvent.VK_D) {
             derecha = activo;
         }
     }
