@@ -1,42 +1,52 @@
 package modelo;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import util.RankingJsonRepository;
+
 
 /**
- * Ranking en memoria de las mejores partidas.
+ * Fachada del modelo para trabajar con el ranking del juego.
+ *
+ * <p>La vista y el controlador usan esta clase y no conocen detalles de Json
+ * ni de archivos. Esto mantiene la separacion MVC y deja la persistencia
+ * encapsulada en {@link RankingJsonRepository}.</p>
  */
 public class Ranking {
-    private final List<JugadorRegistro> registros;
+    private final RankingJsonRepository repositorio;
 
     /**
-     * Crea un ranking vacio.
+     * Crea el ranking y asegura que el archivo JSON exista.
      */
     public Ranking() {
-        registros = new ArrayList<>();
+        repositorio = new RankingJsonRepository();
+        repositorio.inicializarArchivo();
     }
 
     /**
-     * Agrega una partida al historial en memoria.
+     * Registra una partida terminada en el historial local.
+     */
+    public void registrarPartida(JugadorRegistro registro) {
+        repositorio.agregarRegistro(registro);
+    }
+
+    /**
+     * Mantiene compatibilidad con codigo previo que agregaba jugadores al ranking.
      */
     public void agregarJugador(JugadorRegistro registro) {
-        registros.add(registro);
+        registrarPartida(registro);
     }
 
     /**
-     * Devuelve los tres puntajes mas altos.
+     * Devuelve el historial completo de partidas guardadas.
+     */
+    public List<JugadorRegistro> obtenerHistorial() {
+        return repositorio.cargarHistorial();
+    }
+
+    /**
+     * Devuelve los tres mejores puntajes guardados.
      */
     public List<JugadorRegistro> obtenerTop3() {
-        List<JugadorRegistro> copia = new ArrayList<>(registros);
-        copia.sort(Comparator.comparingInt(JugadorRegistro::getPuntaje).reversed());
-        return copia.subList(0, Math.min(3, copia.size()));
-    }
-
-    /**
-     * TODO: Preparar guardado en archivo .txt si el curso lo solicita.
-     */
-    public void guardarEnArchivo() {
-        // Metodo reservado para una version posterior.
+        return repositorio.obtenerTop3();
     }
 }

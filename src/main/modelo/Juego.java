@@ -3,6 +3,8 @@ package modelo;
 import util.CargadorRecursos;
 
 import java.awt.Image;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.Random;
 public class Juego {
     public static final int ANCHO_PANEL = 900;
     public static final int ALTO_PANEL = 650;
+    private static final DateTimeFormatter FORMATO_FECHA =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final Random random;
     private final Ranking ranking;
@@ -88,7 +92,7 @@ public class Juego {
      * Genera enemigos, tesoros y power-ups con probabilidades simples.
      */
     public void generarObjetos() {
-        // TODO: Ajustar dificultad y frecuencias segun pruebas del equipo.
+        // Estos intervalos controlan la dificultad base del juego.
         if (ticks % 55 == 0) {
             String tipo = random.nextBoolean() ? "medusa" : "pez_globo";
             Image imagen = CargadorRecursos.cargarImagen("/images/" + tipo + ".png");
@@ -155,12 +159,16 @@ public class Juego {
 
     private void terminarPartida() {
         terminado = true;
+        // Esta bandera evita que la misma partida se guarde varias veces
+        // mientras el controlador muestra la pantalla de Game Over.
         if (!partidaRegistrada) {
-            ranking.agregarJugador(new JugadorRegistro(
+            ranking.registrarPartida(new JugadorRegistro(
                     buzo.getNombreJugador(),
                     buzo.getPuntaje(),
                     tiempoSegundos,
-                    profundidad));
+                    profundidad,
+                    nivel,
+                    LocalDateTime.now().format(FORMATO_FECHA)));
             partidaRegistrada = true;
         }
     }

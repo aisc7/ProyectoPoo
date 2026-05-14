@@ -37,7 +37,7 @@ public class PanelBienvenida extends JPanel {
         JPanel panelCentro = new JPanel(new GridLayout(5, 1, 8, 8));
         panelCentro.setOpaque(false);
         panelCentro.add(etiqueta("Materia: Programacion Orientada a Objetos"));
-        // TODO: Reemplazar por nombres reales de integrantes.
+        // Editar estos nombres antes de la entrega final.
         panelCentro.add(etiqueta("Integrantes: Nombre 1 - Nombre 2 - Nombre 3"));
         panelCentro.add(etiqueta("Universidad Autonoma de Manizales"));
         panelCentro.add(etiqueta("Recolecta tesoros y sobrevive al descenso"));
@@ -68,7 +68,7 @@ public class PanelBienvenida extends JPanel {
             g.setColor(new Color(16, 75, 120));
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
-            g.drawString("TODO: colocar fondo_bienvenida.png", 30, 580);
+            g.drawString("Fondo pendiente: fondo_bienvenida.png", 30, 580);
         }
         if (logo != null) {
             g.drawImage(logo, 30, 30, 100, 80, null);

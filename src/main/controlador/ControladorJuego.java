@@ -9,6 +9,8 @@ import vista.VentanaPrincipal;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Conecta el modelo Juego con el panel de dibujo y el timer principal.
@@ -19,6 +21,7 @@ public class ControladorJuego {
     private final PanelGameOver panelGameOver;
     private final VentanaPrincipal ventana;
     private final ControladorTeclado controladorTeclado;
+    private final List<ControladorEntrada> entradas;
     private final ReproductorSonido musica;
     private final ReproductorSonido efectos;
     private Timer timer;
@@ -34,10 +37,32 @@ public class ControladorJuego {
         this.panelJuego = ventana.getPanelJuego();
         this.panelGameOver = ventana.getPanelGameOver();
         this.controladorTeclado = new ControladorTeclado();
+        this.entradas = new ArrayList<>();
         this.musica = new ReproductorSonido();
         this.efectos = new ReproductorSonido();
         panelJuego.setJuego(juego);
+        panelJuego.setFocusable(true);
         panelJuego.addKeyListener(controladorTeclado);
+        agregarEntrada(new ControladorJoystick());
+        agregarEntrada(controladorTeclado);
+    }
+
+    /**
+     * Agrega una entrada de movimiento al ciclo principal.
+     */
+    public void agregarEntrada(ControladorEntrada entrada) {
+        if (entrada != null) {
+            entradas.add(entrada);
+        }
+    }
+
+    /**
+     * Actualiza joystick y teclado antes de avanzar el modelo.
+     */
+    public void actualizarEntradas() {
+        for (ControladorEntrada entrada : entradas) {
+            entrada.actualizarMovimiento(juego.getBuzo());
+        }
     }
 
     /**
@@ -50,7 +75,7 @@ public class ControladorJuego {
         iniciarHiloAnimacion();
 
         timer = new Timer(16, e -> {
-            controladorTeclado.actualizarMovimiento(juego.getBuzo());
+            actualizarEntradas();
             juego.actualizar();
             panelJuego.repaint();
             if (juego.isTerminado()) {

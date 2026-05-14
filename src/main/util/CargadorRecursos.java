@@ -22,7 +22,6 @@ public class CargadorRecursos {
     public static Image cargarImagen(String ruta) {
         URL recurso = CargadorRecursos.class.getResource(ruta);
         if (recurso == null) {
-            System.out.println("Imagen no encontrada: " + ruta);
             return null;
         }
         return new ImageIcon(recurso).getImage();
@@ -36,13 +35,11 @@ public class CargadorRecursos {
     public static AudioInputStream cargarSonido(String ruta) {
         URL recurso = CargadorRecursos.class.getResource(ruta);
         if (recurso == null) {
-            System.out.println("Sonido no encontrado: " + ruta);
             return null;
         }
         try {
             return AudioSystem.getAudioInputStream(recurso);
         } catch (Exception e) {
-            System.out.println("No se pudo cargar el sonido: " + ruta);
             return null;
         }
     }
