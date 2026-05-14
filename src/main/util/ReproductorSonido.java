@@ -51,7 +51,7 @@ public class ReproductorSonido {
                 clipActual.start();
             }
         } catch (Exception e) {
-            System.out.println("No se pudo reproducir el sonido: " + ruta);
+            clipActual = null;
         }
     }
 }

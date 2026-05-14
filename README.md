@@ -1,24 +1,28 @@
 # Tesoros del Abismo
 
-Base inicial de un videojuego 2D en Java con Swing, Programacion Orientada a Objetos y arquitectura MVC.
+Videojuego 2D desarrollado en Java Swing con Programacion Orientada a Objetos y arquitectura MVC.
 
-El jugador controla un buzo que desciende por el oceano, recolecta tesoros y evita criaturas marinas. La profundidad aumenta con el tiempo; cada 100 metros sube el nivel y los enemigos se vuelven mas rapidos.
+## Descripcion
 
-## Como ejecutar en IntelliJ IDEA
+El jugador controla un buzo que desciende por el oceano para recolectar tesoros. Durante la partida aparecen criaturas marinas que deben evitarse y burbujas de oxigeno que permiten recuperar vida.
 
-1. Abrir esta carpeta como proyecto.
-2. Marcar `src/main` como **Sources Root**.
-3. Marcar `resources` como **Resources Root**.
-4. Ejecutar la clase `Main`.
+La profundidad aumenta con el tiempo. Cada 100 metros sube el nivel y la velocidad de los enemigos incrementa.
 
-No se requieren dependencias externas ni motores de videojuegos.
+## Objetivo del juego
+
+Recolectar la mayor cantidad de perlas y cofres posible, conservar vidas y alcanzar la mayor profundidad antes de terminar la partida.
 
 ## Controles
 
-- Flecha izquierda: mover el buzo a la izquierda.
-- Flecha derecha: mover el buzo a la derecha.
-- Flecha arriba: mover el buzo hacia arriba.
-- Flecha abajo: mover el buzo hacia abajo.
+Joystick o gamepad:
+
+- Stick izquierdo: mover el buzo.
+- Cruceta/D-pad: mover el buzo.
+
+Teclado de respaldo:
+
+- Flechas: mover el buzo.
+- WASD: mover el buzo.
 
 ## Reglas
 
@@ -30,28 +34,76 @@ No se requieren dependencias externas ni motores de videojuegos.
 - La burbuja de oxigeno recupera 1 vida, hasta un maximo de 5.
 - Cada segundo aumenta la profundidad en 10 metros.
 - Cada 100 metros aumenta el nivel.
-- La velocidad de los enemigos aumenta segun el nivel.
-- Si las vidas llegan a 0, la partida termina.
+- Si las vidas llegan a 0, termina la partida.
 - Se puede volver a jugar sin cerrar la aplicacion.
+
+## Requisitos
+
+- JDK 17.
+- Maven.
+- Joystick o gamepad compatible con JInput.
+- IntelliJ IDEA o un entorno compatible con proyectos Maven.
+
+## Como ejecutar
+
+Compilar el proyecto:
+
+```bash
+mvn clean compile
+```
+
+Ejecutar el juego:
+
+```bash
+mvn exec:java
+```
+
+Tambien se puede abrir el proyecto en IntelliJ IDEA como proyecto Maven y ejecutar la clase `Main`.
+
+Al iniciar correctamente, la consola muestra:
+
+```text
+Juego iniciado correctamente.
+```
+
+Si hay un joystick compatible:
+
+```text
+Joystick conectado: <nombre>
+```
+
+Si no hay joystick conectado:
+
+```text
+No se detectó joystick. Se usará teclado.
+```
 
 ## Estructura MVC
 
 - `modelo`: contiene entidades, reglas, colisiones, puntaje, tiempo, profundidad, nivel y ranking.
-- `vista`: contiene pantallas Swing y dibujo del juego.
-- `controlador`: conecta botones, teclado, timer y flujo de pantallas.
-- `util`: carga segura de recursos y reproduccion de sonidos `.wav`.
-
-La vista no contiene la logica principal del juego. `Juego` es el modelo central y `ControladorJuego` ejecuta el ciclo con `javax.swing.Timer`.
+- `vista`: contiene las pantallas Swing y el dibujo del juego.
+- `controlador`: conecta teclado, joystick, botones, temporizador y flujo de pantallas.
+- `util`: contiene carga de recursos y reproduccion de sonidos.
 
 ## Recursos
 
-Colocar imagenes en:
+Las imagenes deben ubicarse en:
 
 ```text
-resources/images/
+resources/images
 ```
 
-Archivos esperados:
+Los sonidos deben ubicarse en:
+
+```text
+resources/sounds
+```
+
+Si falta una imagen, el juego dibuja una figura simple de respaldo. Si falta un sonido, la reproduccion se omite sin cerrar el juego.
+
+## Archivos de recursos esperados
+
+Imagenes:
 
 - `fondo_bienvenida.png`
 - `fondo_juego.png`
@@ -66,13 +118,7 @@ Archivos esperados:
 - `burbuja_oxigeno.png`
 - `corazon.png`
 
-Colocar sonidos en:
-
-```text
-resources/sounds/
-```
-
-Archivos esperados:
+Sonidos:
 
 - `inicio.wav`
 - `juego.wav`
@@ -80,14 +126,3 @@ Archivos esperados:
 - `colision.wav`
 - `oxigeno.wav`
 - `gameover.wav`
-
-Si falta una imagen, el juego dibuja figuras simples de respaldo. Si falta un sonido, el juego lo ignora y muestra un mensaje en consola.
-
-## TODO para el equipo
-
-- Reemplazar nombres de integrantes en `PanelBienvenida`.
-- Agregar el logo definitivo de la UAM en `resources/images/logo_uam.png`.
-- Agregar imagenes definitivas en `resources/images`.
-- Agregar sonidos definitivos en `resources/sounds`.
-- Ajustar dificultad en `Juego.generarObjetos()`.
-- Opcional: implementar guardado del ranking en archivo `.txt`.
